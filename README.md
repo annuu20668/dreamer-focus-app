@@ -65,7 +65,8 @@ Designed to make focus feel peaceful rather than stressful.
 <img width="1897" height="871" alt="image" src="https://github.com/user-attachments/assets/b199608d-ade9-4c59-b534-038aa6148787" />
 
 
-<img width="1918" height="808" alt="image" src="https://github.com/user-attachments/assets/2e1fe3cc-9908-4d75-83d6-0b5196ecd328" />
+<img width="1913" height="906" alt="image" src="https://github.com/user-attachments/assets/11fcf2bf-a880-4eca-b04b-61bb07c21371" />
+
 
 
 
