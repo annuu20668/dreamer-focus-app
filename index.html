@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dreamer — Focus Beyond The Stars</title>
+  <meta name="description" content="An immersive cosmic focus timer and productivity companion. Dream, focus, and create beyond the stars." />
+
+  <!-- Google Fonts: Cormorant Garamond (display) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Three.js CDN — 3D rendering library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- GSAP CDN — professional animation library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ============================================================
+     DREAMER PORTAL
+============================================================ -->
+<div id="dreamer-portal" class="dreamer-portal">
+
+    <div class="portal-content">
+
+        <div class="portal-moon">🌙</div>
+
+        <h1>Welcome Dreamer</h1>
+
+        <p>
+            Every great journey begins
+            with a single quiet step.
+        </p>
+
+        <button id="enter-dreamer" class="portal-btn">
+
+            ✨ Enter Your Own Cosmos Focus World
+
+        </button>
+        <div class="portal-footer">
+
+    <p>Crafted beneath the stars ✨</p>
+
+    <span>Designed &amp; Developed by Anushka Agarwal</span>
+
+</div>
+
+    </div>
+
+</div>
+
+  <!-- ============================================================
+       CUSTOM CURSOR
+       The default OS cursor is hidden. We render our own.
+  ============================================================ -->
+  <div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-glow"></div>
+<div id="cursor-particles"></div>
+
+<!-- ADD THIS -->
+<div id="stardust-layer"></div>
+
+  <!-- ============================================================
+       THREE.JS CANVAS
+       Full-screen cosmic background rendered by Three.js.
+       Lives behind all HTML content (z-index: 0).
+  ============================================================ -->
+  <canvas id="cosmos-canvas"></canvas>
+  <!-- Rank Badge -->
+<div id="rank-badge">
+  <div id="rank-icon">🔭</div>
+  <div id="rank-title">Stargazer</div>
+
+  <div id="rank-bar">
+    <div id="rank-bar-fill"></div>
+  </div>
+
+  <div id="rank-next">Next: Explorer (5 sessions)</div>
+</div>
+
+<!-- Cosmic Companion -->
+<div class="companion" id="companion">
+  <svg class="companion-svg" viewBox="0 0 120 80">
+
+  <!-- Tail -->
+  <path d="M10 42 Q0 28 8 18 Q14 30 10 42Z"
+        fill="var(--accent)"/>
+
+  <path d="M10 42 Q0 56 8 66 Q14 54 10 42Z"
+        fill="var(--accent)"/>
+
+  <!-- Body -->
+  <ellipse cx="55" cy="42" rx="48" ry="28"
+           fill="var(--accent)"/>
+
+  <!-- Fin -->
+  <path d="M55 15 Q48 2 40 8 Q50 14 55 15Z"
+        fill="var(--accent2)"/>
+
+  <path d="M55 58 Q48 70 40 64 Q50 58 55 58Z"
+        fill="var(--accent2)"/>
+
+  <!-- Eye -->
+ <!-- Eye Group -->
+<g class="whale-eye">
+
+    <circle cx="88" cy="36" r="5" fill="white"/>
+
+    <circle cx="90" cy="35" r="2" fill="#111"/>
+
+    <!-- Eyelid -->
+    <rect
+        class="whale-eyelid"
+        x="82"
+        y="30"
+        width="12"
+        height="0"
+        rx="6"
+        fill="#9b5de5"
+    />
+
+</g>
+
+</svg>
+
+  <div class="companion-particles" id="companion-particles"></div>
+  <div class="companion-zzz" id="companion-zzz">z z z</div>
+  <div class="companion-message" id="companion-message">
+  Welcome, Dreamer. 🌙<br>
+  Every great constellation begins with a single star.<br>
+  Let's create yours together<span class="heart">❤️</span>
+</div>
+</div>
+
+<!-- Rocket Layer -->
+<div class="rocket-layer" id="rocket-layer">
+  <svg class="rocket-svg" viewBox="0 0 40 80">
+    <path d="M20 2 C28 14 32 30 32 46 L20 52 L8 46 C8 30 12 14 20 2Z"
+          fill="#9b6dff"/>
+  </svg>
+  <div class="rocket-trail" id="rocket-trail"></div>
+</div>
+
+<!-- Shooting Star Layer -->
+<div class="shooting-star-layer" id="shooting-star-layer"></div>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav id="nav">
+    <div class="nav-logo">✦ DREAMER</div>
+    <ul class="nav-links">
+
+  <li>
+    <a href="#timer">
+      <i data-lucide="timer"></i>
+      <span>Timer</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="#stats">
+      <i data-lucide="chart-column"></i>
+      <span>Stats</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="#goals">
+      <i data-lucide="target"></i>
+      <span>Goals</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="#constellation">
+      <i data-lucide="sparkles"></i>
+      <span>Constellation</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="#journal">
+      <i data-lucide="book-open"></i>
+      <span>Journal</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="#achievements">
+      <i data-lucide="trophy"></i>
+      <span>Achievements</span>
+    </a>
+  </li>
+
+</ul>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Open menu">
+    ☰
+</button>
+  <button class="nav-cta magnetic-btn" id="nav-cta-btn">
+    <i data-lucide="cloud-moon"></i>
+</button>
+    
+  </nav>
+
+  <!-- ============================================================
+       SECTION 1 — HERO
+  ============================================================ -->
+  <section id="hero">
+    <!-- Floating cosmic orbs for parallax depth layers -->
+    <div class="orb orb-1" data-depth="0.3"></div>
+    <div class="orb orb-2" data-depth="0.6"></div>
+    <div class="orb orb-3" data-depth="0.2"></div>
+
+    <div class="hero-content">
+      <!-- Each letter wrapped so we can animate individually -->
+      <h1 class="hero-title" id="hero-title">
+        <span class="letter">D</span><span class="letter">R</span><span
+          class="letter">E</span><span class="letter">A</span><span
+          class="letter">M</span><span class="letter">E</span><span class="letter">R</span>
+      </h1>
+      <p class="hero-tagline" id="hero-tagline">Focus Beyond The Stars</p>
+      <p class="hero-sub" id="hero-sub">
+        A cosmic sanctuary for deep work, creative dreams,<br>and the quiet magic of becoming.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary magnetic-btn" id="start-journey-btn">
+          <span class="btn-text">Start Your Journey</span>
+          <span class="btn-glow"></span>
+        </button>
+        
+        <button class="btn-ghost magnetic-btn" id="learn-more-btn">Explore ↓</button>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" id="scroll-indicator">
+      <span class="scroll-line"></span>
+      <span class="scroll-label">Scroll to explore</span>
+    </div>
+    <!-- ============================================================
+     LIVING MOON SYSTEM
+     Place inside #hero, before </section>
+============================================================ -->
+<div class="moon-system" id="moon-system">
+
+  <!-- Outer atmospheric glow ring — pulses softly -->
+  <div class="moon-glow-outer"></div>
+
+  <!-- Main moon body — contains surface, craters, shadow -->
+  <div class="moon-body" id="moon-body">
+
+    <!-- Textured surface layer -->
+    <div class="moon-surface">
+      <!-- Five crater layers at different depths/sizes -->
+      <div class="crater crater-1"></div>
+      <div class="crater crater-2"></div>
+      <div class="crater crater-3"></div>
+      <div class="crater crater-4"></div>
+      <div class="crater crater-5"></div>
+      <!-- Subtle surface highlight -->
+      <div class="moon-highlight"></div>
+    </div>
+
+    <!-- Shadow overlay — clip-path controls which phase is shown -->
+    <div class="moon-shadow" id="moon-shadow"></div>
+
+    <!-- Thin atmospheric rim -->
+    <div class="moon-atmosphere"></div>
+
+  </div>
+
+  <!-- Floating dust particles — JS populates this -->
+  <div class="moon-dust-field" id="moon-dust-field"></div>
+
+  <!-- Phase label below moon -->
+  <div class="moon-phase-label" id="moon-phase-label">🌑 New Moon</div>
+
+</div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2 — FOCUS TIMER
+  ============================================================ -->
+  <section id="timer" class="section reveal-section">
+    <div class="section-label">✦ 02 — DREAMER TIMER</div>
+    <h2 class="section-title">Enter The Focus Orbit</h2>
+    <p class="section-sub">Choose your session. Let the cosmos carry you.</p>
+
+    <!-- Session type selector -->
+    <div class="timer-modes" id="timer-modes">
+      <button class="mode-btn active" data-mode="focus" data-duration="1500">
+        Focus
+        <span class="mode-duration">25 min</span>
+      </button>
+      <button class="mode-btn" data-mode="shortBreak" data-duration="300">
+        Short Break
+        <span class="mode-duration">5 min</span>
+      </button>
+      <button class="mode-btn" data-mode="longBreak" data-duration="900">
+         Long Break
+      <span class="mode-duration">15 min</span>
+      </button>
+      </div> <!-- timer-modes -->
+
+    <!-- Glassmorphism timer orb -->
+    <div class="timer-orb-wrapper">
+      <!-- Outer glow rings animate when timer is running -->
+      <div class="orb-ring ring-1"></div>
+      <div class="orb-ring ring-2"></div>
+      <div class="orb-ring ring-3"></div>
+
+      <div class="timer-orb glass-card" id="timer-orb">
+        <!-- SVG circular progress track -->
+        <svg class="timer-progress-svg" viewBox="0 0 220 220" id="timer-svg">
+          <circle class="progress-track" cx="110" cy="110" r="100" />
+          <circle class="progress-fill" cx="110" cy="110" r="100" id="progress-fill" />
+        </svg>
+
+        <div class="timer-inner">
+          <!-- Current mode label -->
+          <div class="timer-mode-label" id="timer-mode-label">Focus</div>
+          <!-- The big clock display -->
+          <div class="timer-display" id="timer-display">25:00</div>
+          <!-- Session count dots -->
+          <div class="session-dots" id="session-dots">
+            <span class="dot"></span><span class="dot"></span>
+            <span class="dot"></span><span class="dot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timer controls -->
+    <div class="timer-controls">
+      <button class="ctrl-btn magnetic-btn" id="btn-reset" title="Reset">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <button class="ctrl-btn ctrl-primary magnetic-btn" id="btn-play" title="Start">
+        <!-- Play icon (default) -->
+        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        <!-- Pause icon (shown when running) -->
+        <svg class="icon-pause hidden" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <button class="ctrl-btn magnetic-btn" id="btn-skip" title="Skip">
+        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,4 15,12 5,20"/><rect x="16" y="4" width="3" height="16"/></svg>
+      </button>
+    </div>
+
+    <!-- Motivational quote display area -->
+    <div class="quote-display" id="quote-display">
+      <p class="quote-text" id="quote-text">"Dreams become reality one focused minute at a time."</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3 — STATS
+  ============================================================ -->
+  <section id="stats" class="section reveal-section">
+    <div class="section-label">✦ 03 — FOCUS STATISTICS</div>
+    <h2 class="section-title">Your Cosmic Journey</h2>
+    <p class="section-sub">Every session is a star added to your constellation.</p>
+
+    <div class="stats-grid">
+      <!-- Stat card: total sessions -->
+      <div class="stat-card glass-card tilt-card">
+        <div class="stat-icon">🌟</div>
+        <div class="stat-value" id="stat-total" data-count="0">0</div>
+        <div class="stat-label">Focus Sessions</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="bar-total"></div></div>
+      </div>
+
+      <!-- Stat card: today -->
+      <div class="stat-card glass-card tilt-card">
+        <div class="stat-icon">🌙</div>
+        <div class="stat-value" id="stat-today" data-count="0">0</div>
+        <div class="stat-label">Today's Sessions</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="bar-today"></div></div>
+      </div>
+
+      <!-- Stat card: streak -->
+      <div class="stat-card glass-card tilt-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-value" id="stat-streak" data-count="0">0</div>
+        <div class="stat-label">Day Streak</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="bar-streak"></div></div>
+      </div>
+
+      <!-- Stat card: total focus minutes -->
+      <div class="stat-card glass-card tilt-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-value" id="stat-minutes" data-count="0">0</div>
+        <div class="stat-label">Minutes Focused</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="bar-minutes"></div></div>
+      </div>
+    </div>
+
+    <!-- Weekly bar chart -->
+    <div class="weekly-chart glass-card">
+      <div class="chart-title">Weekly Orbit Map</div>
+      <div class="chart-bars" id="chart-bars">
+        <!-- JS will render 7 bar columns -->
+      </div>
+      <div class="chart-days">
+        <span>Mon</span><span>Tue</span><span>Wed</span>
+        <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+      </div>
+    </div>
+  </section>
+  <section id="achievements" class="section reveal-section">
+  <div class="section-label">✦ ACHIEVEMENTS</div>
+  <h2 class="section-title">Cosmic Milestones</h2>
+  <p class="section-sub">
+    Every focus session leaves a mark among the stars.
+  </p>
+
+  <div class="achievement-grid" id="achievement-grid">
+    <!-- Filled by JS -->
+  </div>
+</section>
+
+  <!-- ============================================================
+       SECTION 4 — DAILY GOALS
+  ============================================================ -->
+  <section id="goals" class="section reveal-section">
+    <div class="section-label">✦ 04 — DAILY GOALS</div>
+    <h2 class="section-title">Chart Your Constellation</h2>
+    <p class="section-sub">Set intentions. Watch them become stars.</p>
+
+    <div class="goals-container">
+      <!-- Add goal input -->
+      <div class="goal-input-wrap glass-card">
+        <input
+          type="text"
+          id="goal-input"
+          class="goal-input"
+          placeholder="Name a dream to pursue today…"
+          maxlength="80"
+        />
+        <button class="btn-add-goal magnetic-btn" id="btn-add-goal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+
+      <!-- Goal list — rendered by JS -->
+      <ul class="goal-list" id="goal-list"></ul>
+
+      <!-- Empty state shown when no goals -->
+      <div class="goal-empty" id="goal-empty">
+        <span class="goal-empty-icon">✦</span>
+        <p>Your constellation awaits its first star.</p>
+      </div>
+    </div>
+  </section>
+  <!-- ============================================================
+     DREAM CONSTELLATION
+============================================================ -->
+<section id="constellation" class="section reveal-section">
+  <div class="section-label">✦ 05 — DREAM CONSTELLATION</div>
+
+  <h2 class="section-title">Your Growing Constellation</h2>
+
+  <p class="section-sub">
+    Every completed goal becomes a star in your personal sky.
+  </p>
+
+  <div class="constellation-wrap glass-card">
+
+    <canvas id="constellation-canvas"></canvas>
+
+    <div id="constellation-empty" class="constellation-empty">
+      ✦ Complete your first goal to create a star ✦
+    </div>
+
+  </div>
+</section>
+<!-- ============================================================
+     DREAM JOURNAL
+============================================================ -->
+<section id="journal" class="section reveal-section">
+
+  <div class="section-label">✦ 06 — DREAM JOURNAL</div>
+
+  <h2 class="section-title">Dream Journal</h2>
+
+  <p class="section-sub">
+    Capture thoughts, ideas, and moments from your journey.
+  </p>
+
+  <div class="journal-container glass-card">
+
+    <textarea
+      id="journal-textarea"
+      class="journal-textarea"
+      placeholder="Write your thoughts among the stars..."
+      maxlength="2000"
+    ></textarea>
+<div class="journal-controls">
+
+  <span id="journal-date"></span>
+
+  <span id="journal-char-count">0 / 2000</span>
+
+  <button
+    id="btn-journal-save"
+    class="btn-primary magnetic-btn">
+    Save Entry
+  </button>
+
+  <button
+    id="btn-journal-clear"
+    class="btn-ghost magnetic-btn">
+    Clear
+  </button>
+
+  <span id="journal-saved">Saved ✓</span>
+
+</div>
+<div id="journal-entries" class="journal-entries"></div>
+
+</section>
+  
+
+  <!-- ============================================================
+       SECTION 5 — MOTIVATION GALAXY
+  ============================================================ -->
+  <section id="galaxy" class="section reveal-section">
+    <div class="section-label">✦ 05 — MOTIVATION GALAXY</div>
+    <h2 class="section-title">Whispers From The Universe</h2>
+    <p class="section-sub">Words that travel at the speed of light.</p>
+
+    <!-- Floating quote cards arranged in a galaxy formation -->
+    <div class="quote-galaxy" id="quote-galaxy">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Large featured quote display -->
+    <div class="featured-quote glass-card" id="featured-quote">
+      <div class="fq-icon">✦</div>
+      <blockquote class="fq-text" id="fq-text">
+        "Every star was once a distant possibility."
+      </blockquote>
+     <button class="btn-ghost magnetic-btn" id="btn-new-quote">
+    ✨ Receive Another Whisper
+</button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 6 — FOOTER
+  ============================================================ -->
+  <footer id="footer" class="reveal-section">
+    <div class="footer-cosmos">
+      <!-- Tiny star canvas rendered inside footer -->
+      <canvas id="footer-canvas"></canvas>
+    </div>
+    <div class="footer-content">
+      <div class="footer-logo">✦ DREAMER</div>
+      <p class="footer-tagline">Focus Beyond The Stars</p>
+      <p class="footer-copy">
+        Built with cosmic love. Your data stays on your device. No trackers. No ads. Just you and the universe.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="#timer">Timer</a>
+        <a href="#stats">Stats</a>
+        <a href="#goals">Goals</a>
+      </div>
+      <p class="footer-credit">© 2025 Dreamer. Made for dreamers, by a dreamer.</p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       CELEBRATION OVERLAY
+       Shown when a focus session completes.
+  ============================================================ -->
+  <div class="celebration" id="celebration" aria-hidden="true">
+    <canvas id="celebration-canvas"></canvas>
+    <div class="celebration-content glass-card">
+      <div class="celebration-icon">🌟</div>
+      <h3 class="celebration-title">Session Complete!</h3>
+      <p class="celebration-sub" id="celebration-quote"></p>
+      <button class="btn-primary magnetic-btn" id="btn-celebration-close">Continue Journey</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="enhancements.js"></script>
+  <script src="moon.js"></script>
+  <div id="achievement-popup" class="achievement-popup">
+  <div class="achievement-popup-icon">🏆</div>
+  <div class="achievement-popup-title">Achievement Unlocked!</div>
+  <div id="achievement-popup-name"></div>
+</div>
+<div id="theme-panel" class="theme-panel">
+
+  <button class="theme-btn" data-theme="blue">
+    🌙 Moonlight
+  </button>
+
+  <button class="theme-btn" data-theme="purple">
+    🌌 Nebula
+  </button>
+
+  <button class="theme-btn" data-theme="gold">
+    ☀️ Solar
+  </button>
+
+  <button class="theme-btn" data-theme="void">
+    🌑 Void
+  </button>
+
+   <!-- ============================================================
+       CELEBRATION OVERLAY
+  ============================================================ -->
+  <div class="celebration" id="celebration" aria-hidden="true">
+    <canvas id="celebration-canvas"></canvas>
+
+    <div class="celebration-content glass-card">
+      <div class="celebration-icon">🌟</div>
+
+      <h3 class="celebration-title">
+        Session Complete!
+      </h3>
+
+      <p class="celebration-sub" id="celebration-quote"></p>
+
+      <button
+        class="btn-primary magnetic-btn"
+        id="btn-celebration-close">
+        Continue Journey
+      </button>
+    </div>
+  </div>
+
+  <!-- Achievement Popup -->
+  <div id="achievement-popup" class="achievement-popup">
+    <div class="achievement-popup-icon">🏆</div>
+    <div class="achievement-popup-title">
+      Achievement Unlocked!
+    </div>
+    <div id="achievement-popup-name"></div>
+  </div>
+
+  <!-- Theme Panel -->
+  <div id="theme-panel" class="theme-panel">
+
+    <button class="theme-btn" data-theme="blue">
+      🌙 Moonlight
+    </button>
+
+    <button class="theme-btn" data-theme="purple">
+      🌌 Nebula
+    </button>
+
+    <button class="theme-btn" data-theme="gold">
+      ☀️ Solar
+    </button>
+
+    <button class="theme-btn" data-theme="void">
+      🌑 Void
+    </button>
+
+  </div>
+
+  <!-- Floating Theme Button -->
+  <button
+    id="theme-toggle"
+    class="floating-theme-btn"
+    title="Change Theme">
+
+    <i data-lucide="palette"></i>
+
+  </button>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+  </section>   <!-- Last section -->
+
+
+
+  <!-- Project Scripts -->
+  <script src="script.js"></script>
+  <script src="enhancements.js"></script>
+  <script src="moon.js"></script>
+  
+
+</body>
+</html>
