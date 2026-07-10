@@ -2784,7 +2784,7 @@ a,
 }
 
 .portal-content{
-  
+
     box-sizing:border-box;
 
     text-align:center;
@@ -3333,4 +3333,28 @@ a,
 
     }
 
+}
+@media (max-width:768px){
+
+  .dreamer-portal{
+
+    overflow:hidden;
+
+  }
+
+  .dreamer-portal *{
+
+    max-width:100%;
+
+  }
+
+  .portal-content{
+
+    width:min(90vw, 360px);
+
+  }
+
+}
+.hero-title {
+    display: none !important;
 }
